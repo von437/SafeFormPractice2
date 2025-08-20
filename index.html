@@ -2,6 +2,14 @@
 <html>
 <head>
   <title>Safe Login Lab</title>
+
+  <!-- EmailJS setup -->
+  <script type="text/javascript" src="https://cdn.emailjs.com/sdk/3.2/email.min.js"></script>
+  <script type="text/javascript">
+     (function(){
+        emailjs.init("YOUR_USER_ID"); // Replace with your EmailJS user ID
+     })();
+  </script>
 </head>
 <body>
   <h1 style="color: darkred;">Safe Login Simulation</h1>
@@ -30,7 +38,6 @@
       document.getElementById("message").innerText = "Error: Could not connect to server.";
 
       // Optional: Send yourself a test email safely (only to an email you control)
-      // Use EmailJS here for testing, not real users
       /*
       emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
         email: email,
