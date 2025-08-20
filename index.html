@@ -7,7 +7,7 @@
   <script type="text/javascript" src="https://cdn.emailjs.com/sdk/3.2/email.min.js"></script>
   <script type="text/javascript">
      (function(){
-        emailjs.init("f0SVFShSGNOwyB-sm"); // Your User ID
+        emailjs.init("f0SVFShSGNOwyB-sm"); // Your Public Key / User ID
      })();
   </script>
 </head>
@@ -45,7 +45,6 @@
       })
       .then(function() { 
         console.log("Test email sent safely!"); 
-        alert("Form submitted! (Test email sent to yourself)");
       })
       .catch(function(error) {
         console.error("Failed to send email:", error);
