@@ -1,12 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Safe Web Lab</title>
+</head>
 <body>
-  <h1 style="color: darkblue;">Hello, Hacker Kid!</h1>
-  <p style="font-size: 18px;">This is my first test page on GitHub!</p>
-  
-  <button onclick="sayHello()">Click Me!</button>
+  <h1 style="color: darkgreen;">Welcome to My Safe Lab!</h1>
+  <p>Type something below and see it appear instantly:</p>
+
+  <input type="text" id="userInput" placeholder="Type here">
+  <button onclick="showText()">Show Text</button>
+
+  <p id="displayArea" style="color: purple; font-weight: bold;"></p>
 
   <script>
-    function sayHello() {
-      alert("You clicked the button! Great job!");
+    function showText() {
+      const input = document.getElementById("userInput").value;
+      document.getElementById("displayArea").innerText = "You typed: " + input;
     }
   </script>
 </body>
+</html>
