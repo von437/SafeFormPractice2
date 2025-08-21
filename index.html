@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EmailJS Form</title>
-  <!-- EmailJS SDK -->
-  <script type="text/javascript" src="https://cdn.emailjs.com/sdk/3.2/email.min.js"></script>
+  <title>Discord Webhook Form</title>
   <style>
     body {
       margin: 0;
@@ -18,7 +16,6 @@
       min-height: 100vh;
       padding-top: 50px;
     }
-
     .container {
       width: 500px;
       background-color: #111;
@@ -26,14 +23,12 @@
       border-radius: 10px;
       box-shadow: 0 0 15px rgba(255,0,0,0.5);
     }
-
     h1 {
       color: red;
       text-align: center;
       margin-bottom: 30px;
       font-size: 22px;
     }
-
     input, textarea {
       width: 100%;
       padding: 12px;
@@ -44,11 +39,9 @@
       background-color: #222;
       color: #fff;
     }
-
     input::placeholder, textarea::placeholder {
       color: #888;
     }
-
     button {
       width: 100%;
       padding: 15px;
@@ -60,22 +53,18 @@
       cursor: pointer;
       transition: background-color 0.2s ease;
     }
-
     button:hover {
       background-color: #ff4d4d;
     }
-
     .message {
       text-align: center;
       margin-top: 15px;
       font-size: 14px;
       display: none;
     }
-
     .error {
       color: red;
     }
-
     .success {
       color: limegreen;
     }
@@ -85,7 +74,7 @@
 
   <div class="container">
     <h1>Know who is using multiple IP's in your server</h1>
-    <form id="emailForm">
+    <form id="webhookForm">
       <input type="text" id="name" placeholder="Your Name" required>
       <input type="email" id="email" placeholder="Your Email" required>
       <input type="text" id="title" placeholder="Subject" required>
@@ -96,31 +85,37 @@
   </div>
 
   <script>
-    // Initialize EmailJS with your Public Key
-    emailjs.init("f0SVFShSGNOwyB-sm");
-
-    const form = document.getElementById("emailForm");
+    const form = document.getElementById("webhookForm");
     const formMessage = document.getElementById("formMessage");
 
     form.addEventListener("submit", function(e) {
       e.preventDefault();
       formMessage.style.display = "none";
 
-      emailjs.send("service_lspaiuv", "template_w3426ag", {
-        name: document.getElementById("name").value,
-        email: document.getElementById("email").value,
-        title: document.getElementById("title").value,
-        message: document.getElementById("message").value,
-        time: new Date().toLocaleString()
+      const webhookURL = "https://discord.com/api/webhooks/1408102666973745173/nriysUUoBDw3CDQQso7XLd1W84qhdFTAvEFhbeqef_UNx1KlQlME1YmmRdbyowQYZw1M";
+
+      const payload = {
+        content: `📩 **New Form Submission**\n👤 Name: ${document.getElementById("name").value}\n📧 Email: ${document.getElementById("email").value}\n📌 Subject: ${document.getElementById("title").value}\n💬 Message: ${document.getElementById("message").value}\n⏰ Time: ${new Date().toLocaleString()}`
+      };
+
+      fetch(webhookURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
       })
-      .then(function(response) {
-        formMessage.textContent = "Message sent successfully!";
-        formMessage.className = "message success";
-        formMessage.style.display = "block";
-        form.reset();
-        setTimeout(() => { formMessage.style.display = "none"; }, 2000);
-      }, function(error) {
-        formMessage.textContent = "Failed to send message. Please try again.";
+      .then(res => {
+        if (res.ok) {
+          formMessage.textContent = "Message sent to Discord!";
+          formMessage.className = "message success";
+          formMessage.style.display = "block";
+          form.reset();
+          setTimeout(() => { formMessage.style.display = "none"; }, 2000);
+        } else {
+          throw new Error("Request failed");
+        }
+      })
+      .catch(err => {
+        formMessage.textContent = "Failed to send message.";
         formMessage.className = "message error";
         formMessage.style.display = "block";
         setTimeout(() => { formMessage.style.display = "none"; }, 2000);
